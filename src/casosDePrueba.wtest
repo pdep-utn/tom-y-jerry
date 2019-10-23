@@ -1,0 +1,23 @@
+import dominio.*
+
+describe "Testeo de Tom" {
+
+	const orishinalTom = new Gato()
+	fixture {
+		
+		orishinalTom.energia(100)
+	}
+
+	test "Dada una cantidad de segundos y tom, al correr tom ese tiempo, decrementa la energía en base a la velocidad " {
+		const newTom = orishinalTom.correr(1)
+		assert.equals(100, orishinalTom.energia())
+		assert.equals(92.5, newTom.energia())
+	}
+	test "Dado un ratón y tom, al comerlo incrementa su energia en un valor base mas el peso del raton " {
+		const newTom = orishinalTom.comer(jerry)
+		assert.equals(100, orishinalTom.energia())
+		assert.equals(212,newTom.energia())
+
+	}
+	
+}

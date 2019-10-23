@@ -1,31 +1,39 @@
-object tom {
+class Gato {
 
-	var energia = 100
+	var property energia = 100
 	const energiaBaseQueAumentaAlComer = 12
 	const velocidadBase = 5
 	const coeficienteDeEnergiaAlCorrer = 0.5
-	const coeficienteDeEnergiaParaVelocidad = 10
 
 	method comer(unRaton) {
-		energia = energia + self.energiaPorComer(unRaton)
+		const energiaPorComer = energiaBaseQueAumentaAlComer + unRaton.peso()
+		return new Gato(energia = energia + energiaPorComer) 
 	}
 
-	method energiaPorComer(unRaton) = energiaBaseQueAumentaAlComer + unRaton.peso()
-
-	method velocidad() = velocidadBase + energia / coeficienteDeEnergiaParaVelocidad
+	method velocidad() {
+		const coeficienteDeEnergiaParaVelocidad = 10
+		return velocidadBase + energia / coeficienteDeEnergiaParaVelocidad
+	}
 
 	method correr(segundos) {
-		var metros = self.velocidad() * segundos
-		energia = energia - self.energiaPorCorrer(metros)
+		const metros = self.velocidad() * segundos
+		const energiaPorCorrer = metros * coeficienteDeEnergiaAlCorrer 
+		return new Gato(energia = energia - energiaPorCorrer)
 	}
 
-	method energiaPorCorrer(metros) = metros * coeficienteDeEnergiaAlCorrer
-
-	method meConvieneComerRatonA(unRaton, unaDistancia) = self.energiaPorComer(unRaton) > self.energiaPorCorrer(unaDistancia)
+	method tieneMasEnergiaQue(otroGato) = energia > otroGato.energia() 
+	
+	method meConvieneComerRatonA(unRaton, unaDistancia) = self.comer(unRaton).tieneMasEnergiaQue(self.correr(unaDistancia))
 
 }
 
 object jerry {
+
+	var property peso = 100
+
+}
+
+object juan {
 
 	var property peso = 100
 
