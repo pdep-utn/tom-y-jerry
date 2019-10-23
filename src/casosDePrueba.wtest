@@ -2,11 +2,7 @@ import dominio.*
 
 describe "Testeo de Tom" {
 
-	const orishinalTom = new Gato()
-	fixture {
-		
-		orishinalTom.energia(100)
-	}
+	const orishinalTom = new Gato(energia = 100)
 
 	test "Dada una cantidad de segundos y tom, al correr tom ese tiempo, decrementa la energía en base a la velocidad " {
 		const newTom = orishinalTom.correr(1)

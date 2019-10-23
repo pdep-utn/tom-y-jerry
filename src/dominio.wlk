@@ -1,6 +1,6 @@
 class Gato {
 
-	var property energia = 100
+	const property energia = 100
 	const energiaBaseQueAumentaAlComer = 12
 	const velocidadBase = 5
 	const coeficienteDeEnergiaAlCorrer = 0.5
