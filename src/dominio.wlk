@@ -21,9 +21,9 @@ class Gato {
 		return new Gato(energia = energia - energiaPorCorrer)
 	}
 
-	method tieneMasEnergiaQue(otroGato) = energia > otroGato.energia() 
+	method diferenciaCon(otroGato) = (energia - otroGato.energia()).abs() 
 	
-	method meConvieneComerRatonA(unRaton, unaDistancia) = self.comer(unRaton).tieneMasEnergiaQue(self.correr(unaDistancia))
+	method meConvieneComerRatonA(unRaton, unaDistancia) = self.diferenciaCon(self.comer(unRaton)) > self.diferenciaCon(self.correr(unaDistancia))
 
 }
 
