@@ -24,7 +24,7 @@ object tom {
 	method meConvieneComerRatonA(unRaton, unaDistancia) = self.energiaPorComer(unRaton) > self.energiaPorCorrer(unaDistancia)
 
 }
-
+	
 object jerry {
 	var property peso = 100
 }

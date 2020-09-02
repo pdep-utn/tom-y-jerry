@@ -170,4 +170,192 @@ object tom {
 }
 ```
 
-## To be continued ...
+## Corre Tom, ¡corre!
+Veamos ahora que más nos pide el requerimiento
+
+>La persona que registra las actividades de tom, registra los ratones que come y la cantidad de tiempo que corre en segundos
+
+y además 
+
+> Cuando tom corre, su energía disminuye en (0.5 x cantidad de metros que corrió)
+
+Entonces nuevamente tenemos que pensar que mensaje nos tiene que llegar a tom. Correr puede ser un buen nombre para el mensaje y recibe un tiempo que corre en segundos. Entonces :
+
+```wollok
+object tom {
+  var energia = 0
+  const energiaBase = 12 
+
+  method comer(raton){
+    energia = energia + energiaBase + raton.peso()
+  }
+  method correr(segundos) {}
+}
+```
+
+¡Bien! ya tenemos la interfaz, es decir la firma del método (que recibe, cómo se llama y qué devueve). Nuevamente estamos ante un método de **acción** porque tenemos que cambiar el estado del objeto, es decir que tenemos que disminuir su energía. 
+
+```wollok
+object tom {
+  var energia = 0
+  const energiaBase = 12 
+  const coeficienteDeEnergiaAlCorrer = 0.5
+  method comer(raton){
+    energia = energia + energiaBase + raton.peso()
+  }
+  method correr(segundos) {
+    energia = energia - coeficienteDeEnergiaAlCorrer * ???
+  }
+}
+```
+
+Mmmm, necesito la distancia pero recibo los segundos. Huuuu, ¡estamos al horno! pero si recordamos el enunciado 
+
+> La velocidad que se toma es la que corresponde a la energía de Tom antes de empezar a correr, y no varía durante una carrera.
+
+>La velocidad de tom es 5 metros x segundo + (energia medida en joules / 10)
+
+
+Entonces podemos calcular esa longitud como la velocidad por el tiempo
+
+```wollok
+object tom {
+  var energia = 0
+  const energiaBase = 12 
+  const coeficienteDeEnergiaAlCorrer = 0.5
+  method comer(raton){
+    energia = energia + energiaBase + raton.peso()
+  }
+  method correr(segundos) {
+    energia = energia - coeficienteDeEnergiaAlCorrer * "velocidad" * segundos
+  }
+}
+```
+
+Que podemos extraerlo en una constante porque el espacio es calculable como es a velocidad * tiempo
+```wollok
+object tom {
+  var energia = 0
+  const energiaBase = 12 
+  const coeficienteDeEnergiaAlCorrer = 0.5
+  method comer(raton){
+    energia = energia + energiaBase + raton.peso()
+  }
+  method correr(segundos) {
+    const espacio = "velocidad" * segundos
+    energia = energia - coeficienteDeEnergiaAlCorrer * espacio
+  }
+}
+```
+
+Ahora... ¿Cómo se calcula esa "velocidad"? Nuevamente sacamos a las pistas las comparaciones de opciones
+
+### Que tom tenga un atributo velocidad
+
+```wollok
+object tom {
+  var energia = 0
+  const energiaBase = 12 
+  const velocidadBase = 5
+  const coeficienteDeEnergiaAlCorrer = 0.5
+  const coeficienteDeEnergiaParaVelocidad = 10
+  var velocidad = velocidadBase + energia / coeficienteDeEnergiaParaVelocidad
+
+  method comer(raton){
+    energia = energia + energiaBase + raton.peso()
+  }
+  method correr(segundos) {
+    const espacio = velocidad * segundos
+    energia = energia - coeficienteDeEnergiaAlCorrer * espacio
+  }
+}
+```
+No suena bien. ¿Por qué? porque cuando iniciamos nuestra VM de wollok se reduce esa expresión que calcula la velocidad en una primera instancia y referencia mediante el atributo velocidad a un valor, por ejemplo 50. 
+
+### Que tom tenga un atributo velocidad pero lo calculemos en un método
+Ok, entonces calculemos en otra parte
+```wollok
+object tom {
+  var energia = 0
+  const energiaBase = 12 
+  const velocidadBase = 5
+  const coeficienteDeEnergiaAlCorrer = 0.5
+  const coeficienteDeEnergiaParaVelocidad = 10
+  var velocidad
+
+  method calcularVelocidad() {
+    velocidad = velocidadBase + energia / coeficienteDeEnergiaParaVelocidad
+  }
+  method comer(raton){
+    energia = energia + energiaBase + raton.peso()
+  }
+  method correr(segundos) {
+    this.calcularVelocidad()
+    const espacio = velocidad * segundos
+    energia = energia - coeficienteDeEnergiaAlCorrer * espacio
+  }
+}
+```
+Ok, generamos un método cohesivo que se encarga de asignar el valor correspondiente a la velocidad. Pero pueden notar que debo siempre invocar al método **this.calcularVelocidad()** para que quede referenciada la velocidad que necesito. Si la velocidad estuviese utilizada desde otros métodos voy a tener que **siempre** llamar antes a este método repitiendo esta lógica a lo largo de todo el objeto. 
+
+Otro problema que nos trae es que vamos a suponer que para un tom cuyo estado tiene energía de 10, su velocidad 0 y queremos que corra 1 segundo. Cuando calculo su velocidad es de 6 (5 + 10/10). Entonces energía que estaba referenciando al objeto 10, va a bajar en 0.5 * 6 * 1 segundo, es decir que va a quedar en 7. Si miramos el objeto tom, encontramos que tiene energía 7 y velocidad de 6. Este estado es **incoherente** porque para una energía de 7 unidades no puede tener velocidad de 6.
+
+Entonces la pregunta es ¿Debería formar parte del estado la velocidad?
+
+### Atributo calculado
+Nos encontramos que este atributo es un valor calculable a partir de otro. Es decir que la velocidad **depende** de la energía que tenga. Por lo tanto delegamos el cálculo completo en un método de pregunta
+```wollok
+object tom {
+  var energia = 0
+  const energiaBase = 12 
+  const velocidadBase = 5
+  const coeficienteDeEnergiaAlCorrer = 0.5
+  const coeficienteDeEnergiaParaVelocidad = 10
+
+  method velocidad() = velocidadBase + energia / coeficienteDeEnergiaParaVelocidad
+  
+  method comer(raton){
+    energia = energia + energiaBase + raton.peso()
+  }
+  method correr(segundos) {
+    this.calcularVelocidad()
+    const espacio = this.velocidad() * segundos
+    energia = energia - coeficienteDeEnergiaAlCorrer * espacio
+  }
+}
+```
+Ahora cada vez que enviamos el mensaje velocidad() vamos a obtener el valor correspondiente al cálculo para la energía que pertenece al estado actual del objeto tom. 
+
+## Parte B
+El enunciado dice 
+
+>Lograr que tom entienda el mensaje:
+*tom.meConvieneComerRatonA(unRaton, unaDistancia)* que 
+devuelve **true** si la energía que gana por comer al ratón es mayor a la que consume corriendo la distancia, que está medida en metros.
+
+Ya nos dan el mensaje que tenemos que recibir, por lo tanto empezamos a codificar el método
+
+```wollok
+object tom {
+  var energia = 0
+  const energiaBase = 12 
+  const velocidadBase = 5
+  const coeficienteDeEnergiaAlCorrer = 0.5
+  const coeficienteDeEnergiaParaVelocidad = 10
+
+  method velocidad() = velocidadBase + energia / coeficienteDeEnergiaParaVelocidad
+  
+  method comer(raton){
+    energia = energia + energiaBase + raton.peso()
+  }
+  method correr(segundos) {
+    this.calcularVelocidad()
+    const espacio = this.velocidad() * segundos
+    energia = energia - coeficienteDeEnergiaAlCorrer * espacio
+  }
+
+  meConvieneComerRatonA(unRaton, unaDistancia) {}
+}
+```
+
+¿Es de pregunta o acción? Claramente es de pregunta porque me tiene que dar true si le conviene. Entonces no tiene que producirse un cambio en el estado de tom.
