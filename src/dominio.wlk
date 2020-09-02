@@ -15,7 +15,7 @@ object tom {
 	method velocidad() = velocidadBase + energia / coeficienteDeEnergiaParaVelocidad
 
 	method correr(segundos) {
-		var metros = self.velocidad() * segundos
+		const metros = self.velocidad() * segundos
 		energia = energia - self.energiaPorCorrer(metros)
 	}
 
@@ -26,14 +26,10 @@ object tom {
 }
 
 object jerry {
-
 	var property peso = 100
-
 }
 
 object mickey {
-
 	method peso() = 44
-
 }
 
