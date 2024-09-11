@@ -1,8 +1,8 @@
-import example.pepita
+import dominio.*
 
-describe "group of tests for pepita" {
+describe "XX" {
 
-  test "pepita has initial energy" {
+  test "dummy test" {
     assert.equals(100, 100)
   }
 

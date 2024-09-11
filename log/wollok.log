@@ -7,3 +7,6 @@
 {"level":"info","message":"Removing diagnostics from /Users/juancontardo/workspaces/Wollok/tom-y-jerry/src","timestamp":"2024-09-11T13:09:03.626Z"}
 {"level":"info","message":"onRequest - WORKSPACE_URI:file:///Users/juancontardo/workspaces/Wollok/tom-y-jerry","timestamp":"2024-09-11T13:09:31.054Z"}
 {"level":"info","message":"⌛ Validating testExample.wtest","timeElapsed":118,"timestamp":"2024-09-11T13:09:32.171Z"}
+{"level":"info","message":"onRequest - completionItem/resolve","timestamp":"2024-09-11T18:47:45.110Z"}
+{"level":"info","message":"onRequest - completionItem/resolve","timestamp":"2024-09-11T18:47:45.145Z"}
+{"level":"info","message":"onRequest - completionItem/resolve","timestamp":"2024-09-11T18:47:45.283Z"}
