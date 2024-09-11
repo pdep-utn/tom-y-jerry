@@ -10,7 +10,9 @@ object tom {
 		energia = energia + self.energiaPorComer(unRaton)
 	}
 
-	method energiaPorComer(unRaton) = energiaBaseQueAumentaAlComer + unRaton.peso()
+	method energiaPorComer(unRaton) = energiaBaseQueAumentaAlComer + unRaton.peso() + self.extraPorRaton(unRaton)
+
+  method extraPorRaton(unRaton) = if (unRaton.estaFeliz(self)) 10 else 0
 
 	method velocidad() = velocidadBase + energia / coeficienteDeEnergiaParaVelocidad
 
@@ -26,10 +28,25 @@ object tom {
 }
 	
 object jerry {
-	var property peso = 100
+
+  const elementosIngeridos = ["churrasco","pan","ensalada"]
+
+  method peso() = 30 + self.pesoExtra()
+
+  method pesoExtra() = self.alimentosPesados().sum({alimento => alimento.length() * 2})
+
+  method alimentosPesados() = elementosIngeridos.filter {alimento => alimento.length() > 4}
+
+  method estaFeliz(gato) = elementosIngeridos.any{alimento => alimento == "pan"}
 }
 
 object mickey {
-	method peso() = 44
+
+  var property gatoFavorito = tom
+
+	method peso() = 15
+  
+  method estaFeliz(gato) = gatoFavorito == gato 
+
 }
 
