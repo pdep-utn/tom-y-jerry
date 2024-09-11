@@ -45,8 +45,8 @@ object jerry {
 object mickey {
 
   var property gatoFavorito = tom
-
-	method peso() = 15
+  
+  method peso() = 15
 
   method estaFeliz(gato) = gatoFavorito == gato 
 
