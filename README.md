@@ -17,7 +17,7 @@ Jerry es un ratón que tiene un peso que se encuentra relacionado a la cantidad 
 
 Jerry está feliz si alguno de los alimentos que comió es "pan". 
 
-Mickey es otro ratón que su peso es de 15 gramos y está elgre si el gato que lo quiere comer es su gato favorito Tom.
+Mickey es otro ratón que su peso es de 15 gramos y está feliz si el gato que lo quiere comer es su gato favorito Tom.
 
 
 ## Segunda parte
