@@ -5,7 +5,7 @@ Necesitamos modelar en Wollok a tom que es un gato.
 Lo que nos interesa de tom es manejar su energía y su velocidad, que dependen de sus actividades de comer ratones y de correr. 
 La persona que registra las actividades de tom, registra los ratones que come y la cantidad de tiempo que corre en segundos.
 
-Cuando tom come un ratón aumenta su energía en 12 joules + el peso del ratón en gramos + 10 joules extra si el ratón está alegre.
+Cuando tom come un ratón aumenta su energía en 12 joules + el peso del ratón en gramos + 10 joules extra si el ratón está feliz.
 
 La velocidad de tom es 5 metros x segundo + (energia medida en joules / 10). La velocidad que se toma es la que corresponde a la energía de Tom antes de empezar a correr, y no varía durante una carrera. 
 
