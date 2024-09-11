@@ -30,6 +30,8 @@ object tom {
 object jerry {
 
   const elementosIngeridos = ["churrasco","pan","ensalada"]
+  
+  method comer(alimento) { elementosIngeridos.add(alimento) } 
 
   method peso() = 30 + self.pesoExtra()
 
@@ -45,7 +47,7 @@ object mickey {
   var property gatoFavorito = tom
 
 	method peso() = 15
-  
+
   method estaFeliz(gato) = gatoFavorito == gato 
 
 }
