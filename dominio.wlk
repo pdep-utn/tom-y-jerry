@@ -12,7 +12,7 @@ object tom {
 
 	method energiaPorComer(unRaton) = energiaBaseQueAumentaAlComer + unRaton.peso() + self.extraPorRaton(unRaton)
 
-  method extraPorRaton(unRaton) = if (unRaton.estaFeliz(self)) 10 else 0
+        method extraPorRaton(unRaton) = if (unRaton.estaFeliz(self)) 10 else 0
 
 	method velocidad() = velocidadBase + energia / coeficienteDeEnergiaParaVelocidad
 
